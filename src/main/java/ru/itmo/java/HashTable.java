@@ -25,7 +25,7 @@ public class HashTable {
         this.threshold = (int)(this.capacity * this.loadFactor);
     }
 
-    Object put(Object key, Object value) {
+    public Object put(Object key, Object value) {
         Entry newElement = new Entry(key, value);
         int keyIndex = findKeyIndex(key);
 
@@ -54,7 +54,7 @@ public class HashTable {
         return null;
     }
 
-    Object get(Object key) {
+    public Object get(Object key) {
         int index = findKeyIndex(key);
 
         if (index == -1) {
@@ -63,7 +63,7 @@ public class HashTable {
         return elements[index].value;
     }
 
-    Object remove(Object key) {
+    public Object remove(Object key) {
         int index = findKeyIndex(key);
         if (index == -1) {
             return null;
@@ -76,7 +76,7 @@ public class HashTable {
         return removedValue;
     }
 
-    int size() {
+    public int size() {
         return this.size;
     }
 
