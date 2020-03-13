@@ -1,6 +1,7 @@
 package ru.itmo.java;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class HashTable {
 
@@ -43,7 +44,7 @@ public class HashTable {
 
         while (!(elements[currentIndex] == null || elements[currentIndex].deleted)) {
             iteration++;
-            currentIndex = (index + iteration * 23) % capacity;
+            currentIndex = (index + iteration * 7) % capacity;
         }
 
         elements[currentIndex] = newElement;
@@ -80,7 +81,7 @@ public class HashTable {
     }
 
     private int hash(Object key) {
-        return (int)(capacity * (0.618 * Math.abs(key.hashCode()) % 1));
+        return (int)(capacity * (0.618 * Math.abs(Objects.hashCode(key)) % 1));
     }
 
     private void checkResize() {
@@ -106,9 +107,9 @@ public class HashTable {
         int index = hash(key);
         int currentIndex = index;
         int iteration = 0;
-        while (elements[currentIndex] != null && (!(key.equals(elements[currentIndex].key)) || elements[currentIndex].deleted)) {
+        while (elements[currentIndex] != null && (!Objects.equals(key, elements[currentIndex].key) || elements[currentIndex].deleted)) {
             iteration++;
-            currentIndex = (index + iteration * 23) % capacity;
+            currentIndex = (index + iteration * 7) % capacity;
         }
         if (elements[currentIndex] == null) {
             return -1;
