@@ -1,9 +1,23 @@
 package ru.itmo.java;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class HashTable {
+
+    private Entry[] elements;
+
+    private final double loadFactor;
+    private int capacity;
+    private int threshold;
+    private int size = 0;
+
+
+    private static final double DEFAULT_LOAD_FACTOR = 0.5;
+    private static final int DEFAULT_INITIAL_CAPACITY = 500;
+    private static final double HASH_MULTIPLIER = 0.618;
+    private static final int LINEAR_PROBING_STEP = 7;
+    private static final Entry DELETED_ENTRY = new Entry(null, null, true);
+
 
     public HashTable() {
         this(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
@@ -44,7 +58,7 @@ public class HashTable {
 
         while (!(elements[currentIndex] == null || elements[currentIndex].deleted)) {
             iteration++;
-            currentIndex = (index + iteration * 7) % capacity;
+            currentIndex = (index + iteration * LINEAR_PROBING_STEP) % capacity;
         }
 
         elements[currentIndex] = newElement;
@@ -81,7 +95,7 @@ public class HashTable {
     }
 
     private int hash(Object key) {
-        return (int)(capacity * (0.618 * Math.abs(Objects.hashCode(key)) % 1));
+        return (int)(capacity * (HASH_MULTIPLIER * Math.abs(Objects.hashCode(key)) % 1));
     }
 
     private void checkResize() {
@@ -109,7 +123,7 @@ public class HashTable {
         int iteration = 0;
         while (elements[currentIndex] != null && (!Objects.equals(key, elements[currentIndex].key) || elements[currentIndex].deleted)) {
             iteration++;
-            currentIndex = (index + iteration * 7) % capacity;
+            currentIndex = (index + iteration * LINEAR_PROBING_STEP) % capacity;
         }
         if (elements[currentIndex] == null) {
             return -1;
@@ -130,21 +144,8 @@ public class HashTable {
             this.deleted = deleted;
         }
 
-        public final Object key;
-        public final Object value;
-        public final boolean deleted;
+        private final Object key;
+        private final Object value;
+        private final boolean deleted;
     }
-
-
-    private Entry[] elements;
-
-    private final double loadFactor;
-    private int capacity;
-    private int threshold;
-    private int size = 0;
-
-
-    private static final double DEFAULT_LOAD_FACTOR = 0.5;
-    private static final int DEFAULT_INITIAL_CAPACITY = 500;
-    private static final Entry DELETED_ENTRY = new Entry(null, null, true);
 }
