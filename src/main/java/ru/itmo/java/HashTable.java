@@ -124,6 +124,9 @@ public class HashTable {
         while (elements[currentIndex] != null && (!Objects.equals(key, elements[currentIndex].key) || elements[currentIndex].deleted)) {
             iteration++;
             currentIndex = (index + iteration * LINEAR_PROBING_STEP) % capacity;
+            if (currentIndex == index) {
+                return -1;
+            }
         }
         if (elements[currentIndex] == null) {
             return -1;
